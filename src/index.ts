@@ -77,19 +77,6 @@ export default class EasyCopyPaste {
     private replaceLongWords(str: string, shorten: boolean): string {
         const replacements = Object.entries(this.wordReplacements)
             .sort((a, b) => b[0].length - a[0].length);
-
-        // If the string is a Mann Co. Supply Crate Key, return the opposite
-        switch (str) {
-            case 'Mann Co. Supply Crate Key':
-                return 'key'
-
-            case 'key':
-                return 'Mann Co. Supply Crate Key'
-
-            default:
-                break;
-        }
-
         // Replace phrases with their shortened or lengthened versions
         for (const [phrase, replacementPhrase] of replacements) {
             const phraseRegex = new RegExp(`\\b${phrase}\\b`, 'gi');
@@ -100,6 +87,24 @@ export default class EasyCopyPaste {
 
     private findMappedValue(str: string, mappedItems: MappedItem[]): MappedItem | null {
         const lowerStr = str.toLowerCase();
+
+        // If the string is a Mann Co. Supply Crate Key, return the opposite
+        switch (str) {
+            case 'Mann Co. Supply Crate Key':
+                return {
+                    itemName: 'Mann Co. Supply Crate Key',
+                    mappedName: 'key'
+                }
+
+            case 'key':
+                return {
+                    itemName: 'key',
+                    mappedName: 'Mann Co. Supply Crate Key'
+                }
+
+            default:
+                break;
+        }
 
         return mappedItems.find((item) => {
             return (
